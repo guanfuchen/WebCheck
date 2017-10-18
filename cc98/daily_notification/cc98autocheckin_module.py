@@ -4,6 +4,7 @@ from EasyLogin import EasyLogin
 
 __all__ = ["cc98autocheckin"]
 
+
 def checkin(cookie):
     a=EasyLogin(cookie={"aspsky":cookie})
     a.get("http://www.cc98.org/signin.asp",result=False)
@@ -13,16 +14,20 @@ def checkin(cookie):
     else:
         return False
 
+
 def get_amount(cookie):
     a=EasyLogin(cookie={"aspsky":cookie})
     x=a.get("http://www.cc98.org/usermanager.asp",result=False)
     amount=x.split("用户财富： ")[1].split("<")[0]
     return int(amount)
 
+
 class cc98autocheckin(DailyNotification_Base):
     conf_name = "cc98"
+
     def work(self):
-        assert isinstance(self.conf.cookies,list) # "conf/cc98.py" should contain a list of cookie (only aspsky part) named cookies
+        # "conf/cc98.py" should contain a list of cookie (only aspsky part) named cookies
+        assert isinstance(self.conf.cookies,list)
         title = "[CC98] "
         content = ""
         for cookie in self.conf.cookies:

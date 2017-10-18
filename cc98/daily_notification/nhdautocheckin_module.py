@@ -7,6 +7,7 @@ def checkin(cookie):
     """
     Checkin
     """
+    print(cookie)
     a=EasyLogin(cookiestring=cookie)
     a.post("http://www.nexushd.org/signin.php",data="action=post&content=auto+reply...+%5Bem4%5D+")
 

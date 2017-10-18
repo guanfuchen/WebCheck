@@ -1,9 +1,12 @@
 import os
 import importlib
 from notification import send
-#import logging as _logging
-#logging = _logging.getLogger(__name__)
-#logging.setLevel(_logging.DEBUG)
+
+# import logging as _logging
+# logging = _logging.getLogger(__name__)
+# logging.setLevel(_logging.DEBUG)
+
+
 class DailyNotification_Base():
     conf_name = None
 
@@ -12,7 +15,7 @@ class DailyNotification_Base():
         import conf file to self.conf
         """
         self.conf = self.conf_check()
-        #print([i for i in dir(conf) if not i.startswith("_")])
+        # print([i for i in dir(conf) if not i.startswith("_")])
 
     def work(self):
         """
@@ -28,10 +31,10 @@ class DailyNotification_Base():
     
     def conf_check(self):
         if self.conf_name is None:
-            #logging.warning("no conf")
+            # logging.warning("no conf")
             return None
         filename = "conf/{conf_name}.py".format(conf_name=self.conf_name)
-        #logging.info("filename:"+filename)
+        # logging.info("filename:"+filename)
         if os.path.exists(filename):
             return importlib.import_module("conf.{conf_name}".format(conf_name=self.conf_name))
         else:
@@ -40,6 +43,5 @@ class DailyNotification_Base():
     def run(self):
         should_send, title, message = self.work()
         if should_send:
-            status = send(title,message)
-            print(title,status)
-    
+            status = send(title, message)
+            print(title, status)
