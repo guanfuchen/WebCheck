@@ -27,6 +27,8 @@ class nhdautocheckin(DailyNotification_Base):
     def work(self):
         if not self.conf.onlyget:
             checkin(self.conf.cookie)
+        casino_speed = '0'
+        casino_points = '0'
         casino_speed,casino_points = get_casino_speed(self.conf.cookie)
         return True,"[NHD] {casino_points}".format(**locals()),"Speed: {casino_speed}".format(**locals())
 

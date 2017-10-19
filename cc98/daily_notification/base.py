@@ -41,7 +41,8 @@ class DailyNotification_Base():
             raise FileNotFoundError
     
     def run(self):
+        pass
         should_send, title, message = self.work()
-        if should_send:
-            status = send(title, message)
-            print(title, status)
+        # if should_send:
+        #     status = send(title, message)
+        #     print(title, status)

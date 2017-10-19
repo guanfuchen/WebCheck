@@ -6,13 +6,14 @@ __all__ = ["cc98autocheckin"]
 
 
 def checkin(cookie):
+    print(cookie)
     a=EasyLogin(cookie={"aspsky":cookie})
     a.get("http://www.cc98.org/signin.asp",result=False)
     x=a.post("http://www.cc98.org/signin.asp?action=save",data="Expression=face7.gif&content=%E7%AD%BE%E5%88%B0%E7%AD%BE%E5%88%B0")
-    if "/dispbbs.asp?boardid=326&id=4635712" in x.text:
-        return True
-    else:
-        return False
+    # if "/dispbbs.asp?boardid=326&id=4635712" in x.text:
+    #     return True
+    # else:
+    #     return False
 
 
 def get_amount(cookie):
@@ -31,13 +32,13 @@ class cc98autocheckin(DailyNotification_Base):
         title = "[CC98] "
         content = ""
         for cookie in self.conf.cookies:
-            username = cookie.split("username=")[1].split("&",2)[0]
-            oldamount = get_amount(cookie)
+            # username = cookie.split("username=")[1].split("&",2)[0]
+            # oldamount = get_amount(cookie)
             checkin_status = checkin(cookie)
-            newamount = get_amount(cookie)
-            gained = newamount-oldamount
-            title += "{username}: {gained}, ".format(username=username,gained=gained)
-            content += "{username}: {newamount}\n\n".format(username=username,newamount=newamount)
+            # newamount = get_amount(cookie)
+            # gained = newamount-oldamount
+            # title += "{username}: {gained}, ".format(username=username,gained=gained)
+            # content += "{username}: {newamount}\n\n".format(username=username,newamount=newamount)
         return True, title, content
 
 if __name__ == "__main__":

@@ -27,29 +27,44 @@ UALIST = [
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.100 Safari/537.36"
 ]
 
-def cc98_login_check():
-    print('cc98_login_check----in----')
+def cc98_bonous():
+    print('cc98_bonous----in----')
     session = requests.Session()
     session.headers.update({'User-Agent': random.choice(UALIST)})
     session.cookies.update(cc98_cookie)
     response = session.get(url='http://www.cc98.org/usermanager.asp')
     html_doc = str(response.text)
-    # print(html_doc)
-    # soup = BeautifulSoup(html_doc, 'html.parser')
-    # tablebody1s = soup.select('.tablebody1')
     bonous = html_doc.split('用户财富： ')[1].split('<')[0]
     print('用户财富： ' + bonous)
+    print('cc98_bonous----out----')
+    return bonous
+
+def cc98_login_check():
+    print('cc98_login_check----in----')
+
+    bonous_before = cc98_bonous()
 
     session_check = requests.Session()
     session_check.headers.update({'User-Agent': random.choice(UALIST)})
     session_check.cookies.update(cc98_cookie)
-    session_check.get("http://www.cc98.org/signin.asp")
-    response_check = session_check.post("http://www.cc98.org/signin.asp?action=save", data="Expression=face7.gif&content=%E7%AD%BE%E5%88%B0%E7%AD%BE%E5%88%B0")
+    response_check = session_check.get(url="http://www.cc98.org/signin.asp")
     # print(response_check.text)
-    if "/dispbbs.asp?boardid=326&id=4635712" in response_check.text:
-        print('签到成功')
-    else:
-        print('你今天已经签到过了，请明天再来~')
+    response_check = session_check.post(url="http://www.cc98.org/signin.asp?action=save", data="Expression=face7.gif&content=%E7%AD%BE%E5%88%B0%E7%AD%BE%E5%88%B0", headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
+
+    bonous_after = cc98_bonous()
+
+    try:
+        if float(bonous_before.replace(',', '')) < float(bonous_after.replace(',', '')):
+            print('CC98签到成功')
+        else:
+            print('CC98已签到')
+    except:
+        print('bonous string to int error')
+
+    # if "/dispbbs.asp?boardid=326&id=4635712" in response_check.text:
+    #     print('签到成功')
+    # else:
+    #     print('你今天已经签到过了，请明天再来~')
     print('cc98_login_check----out----')
 
 def setcookie(session, cookiestring):
@@ -64,8 +79,8 @@ def setcookie(session, cookiestring):
             cookie.update({a: b})
         session.cookies.update(cookie)
 
-def nhd_login_check():
-    print('nhd_login_check----in----')
+def nhd_bonous():
+    print('nhd_bonous----in----')
     session = requests.Session()
     session.headers.update({'User-Agent': random.choice(UALIST)})
     setcookie(session, nhd_cookie_str)
@@ -73,11 +88,28 @@ def nhd_login_check():
     html_doc = str(response.text)
     bonous = html_doc.split("""[<a href="mybonus.php">Use</a>]:""")[1].split("<",2)[0].strip()
     print('魔力值： ' + bonous)
+    print('nhd_bonous----out----')
+    return bonous
+
+def nhd_login_check():
+    print('nhd_login_check----in----')
+
+    bonous_before = nhd_bonous()
 
     session_check = requests.Session()
     session_check.headers.update({'User-Agent': random.choice(UALIST)})
     setcookie(session_check, nhd_cookie_str)
-    response_check = session_check.post("http://www.nexushd.org/signin.php", data="action=post&content=auto+reply...+%5Bem4%5D+")
+    response_check = session_check.post("http://www.nexushd.org/signin.php", data="action=post&content=auto+reply...+%5Bem4%5D+", headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
+
+    bonous_after = nhd_bonous()
+
+    try:
+        if float(bonous_before.replace(',', '')) < float(bonous_after.replace(',', '')):
+            print('NHD签到成功')
+        else:
+            print('NHD已签到')
+    except:
+        print('bonous string to int error')
     print('nhd_login_check----out----')
 
 if __name__ == '__main__':
